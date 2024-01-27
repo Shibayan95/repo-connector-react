@@ -58,7 +58,7 @@ function App() {
     )
   };
 
-  const ListAllReposView = () => {
+  const listAllReposView = () => {
     if(!listView) {
       return <></>
     }
@@ -157,9 +157,12 @@ function App() {
                                     {scannedRepoDetails.content?.fileName && (
                                       <Card>
                                         <Card.Header>{scannedRepoDetails.content.fileName}</Card.Header>
-                                        <Card.Body dangerouslySetInnerHTML={{
-                                          __html: scannedRepoDetails.content.text
-                                        }}>
+                                        <Card.Body>
+                                          <Form.Control
+                                            as="textarea"
+                                            style={{ height: '800px'}}
+                                            value={scannedRepoDetails.content.text}
+                                          />
                                         </Card.Body>
                                       </Card>
                                     )}
@@ -172,7 +175,7 @@ function App() {
                             <>
                               {isScanningRepo ? <SpinnerLocal /> : (
                                 <Col md={12} className='mt-3'>
-                                  <Button onClick={e => setSelectedRepo(repo.name)}>Scan Repository</Button>
+                                  <Button onClick={() => setSelectedRepo(repo.name)}>Scan Repository</Button>
                                 </Col>
                               )}
                             </>
@@ -276,9 +279,12 @@ function App() {
                                {scannedRepo.scanDetails.content?.fileName && (
                                  <Card>
                                    <Card.Header>{scannedRepo.scanDetails.content.fileName}</Card.Header>
-                                   <Card.Body dangerouslySetInnerHTML={{
-                                     __html: scannedRepo.scanDetails.content.text
-                                   }}>
+                                   <Card.Body>
+                                      <Form.Control
+                                        as="textarea"
+                                        style={{ height: '800px'}}
+                                        value={scannedRepo.scanDetails.content.text}
+                                      />
                                    </Card.Body>
                                  </Card>
                                )}
@@ -327,12 +333,12 @@ function App() {
               <Col md={12} className='d-flex'>
                 <Col></Col>
                 <Col>
-                  <Button variant="primary" size="lg" disabled={listView} onClick={selectListView}>
+                  <Button variant="primary" size="lg" disabled={listView || isLoading} onClick={selectListView}>
                     List Repositories
                   </Button>
                 </Col>
                 <Col>
-                  <Button variant="primary" size="lg" disabled={allScanView} onClick={selectAllScanView}>
+                  <Button variant="primary" size="lg" disabled={allScanView || isLoading} onClick={selectAllScanView}>
                     Scan Repositories
                   </Button>
                 </Col>
@@ -342,7 +348,7 @@ function App() {
           </Card.Header>
           {isLoading ? <SpinnerLocal /> : (
             <>
-              <ListAllReposView />
+              {listAllReposView()}
               <AllScanView />
             </>
         )}
